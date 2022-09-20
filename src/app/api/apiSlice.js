@@ -1,19 +1,18 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { setCredentials } from '../../features/auth/authSlice'
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://technotes-api.onrender.com',
-  credentials: 'include',
-  prepareHeaders: (headers, { getState }) => {
-    const token = getState().auth.token;
+    baseUrl: 'https://technotes-api.onrender.com',
+    credentials: 'include',
+    prepareHeaders: (headers, { getState }) => {
+        const token = getState().auth.token
 
-    if (token) {
-      headers.set('authorization', `Bearer ${token}`);
+        if (token) {
+            headers.set("authorization", `Bearer ${token}`)
+        }
+        return headers
     }
-
-    return headers;
-  },
-});
+})
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
     // console.log(args) // request url, method, body
@@ -39,7 +38,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
         } else {
 
             if (refreshResult?.error?.status === 403) {
-                refreshResult.error.data.message = "Your login has expired. "
+                refreshResult.error.data.message = "Your login has expired."
             }
             return refreshResult
         }
@@ -49,7 +48,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 }
 
 export const apiSlice = createApi({
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ['Note', 'User'],
-  endpoints: (builder) => ({}),
-});
+    baseQuery: baseQueryWithReauth,
+    tagTypes: ['Note', 'User'],
+    endpoints: builder => ({})
+})
